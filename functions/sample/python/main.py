@@ -8,26 +8,19 @@ from cloudant.error import CloudantException
 import requests
 
 
-def main(param_dict):
-    """Main Function
-
-    Args:
-        param_dict (Dict): input paramater
-
-    Returns:
-        _type_: _description_ TODO
-    """
+def main(dict):
+    databaseName = "dealerships"
 
     try:
         client = Cloudant.iam(
-            account_name=param_dict["COUCH_USERNAME"],
-            api_key=param_dict["IAM_API_KEY"],
+            account_name=dict["COUCH_USERNAME"],
+            api_key=dict["IAM_API_KEY"],
             connect=True,
         )
-        print(f"Databases: {client.all_dbs()}")
-    except CloudantException as cloudant_exception:
+        print("Databases: {0}".format(client.all_dbs()))
+    except CloudantException as ce:
         print("unable to connect")
-        return {"error": cloudant_exception}
+        return {"error": ce}
     except (requests.exceptions.RequestException, ConnectionResetError) as err:
         print("connection error")
         return {"error": err}
